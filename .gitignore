@@ -1,0 +1,5 @@
+*.iml
+vcs.xml
+*idea/*
+modules.
+app

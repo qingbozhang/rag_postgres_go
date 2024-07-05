@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Document Upload and Search</title>
+</head>
+<body>
+    <h2>Upload Document</h2>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <input type="submit" value="Upload">
+    </form>
+
+    <h2>Search</h2>
+    <input type="text" id="searchQuery" placeholder="Enter search query">
+    <button onclick="performSearch()">Search</button>
+
+    <div id="searchResults"></div>
+
+    <script>
+        document.getElementById('uploadForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const response = await fetch('/upload', {
+                method: 'POST',
+                body: formData,
+            });
+            alert(await response.text());
+        };
+
+        async function performSearch() {
+            const query = document.getElementById('searchQuery').value;
+            const response = await fetch('/rag_search', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ query: query, maxResults: 5 }),
+            });
+            const data = await response.json();
+            document.getElementById('searchResults').innerText = JSON.stringify(data, null, 2);
+        }
+    </script>
+</body>
+</html>
