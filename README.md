@@ -39,7 +39,8 @@ env PGPASSWORD=postgres psql -h localhost -U postgres -c 'CREATE EXTENSION IF NO
 
 4. Start the app
 
-```bash
+``` bash
+cd $GOPATH/src/
 export PG_HOST=localhost
 export PG_USER=postgres
 export PG_PASSWORD=postgres
