@@ -2,32 +2,54 @@
 <html>
 <head>
     <title>Document Upload and Search</title>
+<style>
+    .hidden { display: none; }
+
+    @keyframes loadingDots {
+        0% { content: ''; }
+        25% { content: '.'; }
+        50% { content: '..'; }
+        75% { content: '...'; }
+        100% { content: ''; }
+    }
+
+    .spinner::after {
+        content: 'Loading';
+        animation: loadingDots 1.5s infinite;
+        white-space: pre; /* Ensures the spaces are preserved */
+    }
+</style>
 </head>
 <body>
     <h2>Upload Document</h2>
     <form id="uploadForm" enctype="multipart/form-data">
         <input type="file" name="file" required>
         <input type="submit" value="Upload">
+        <span id="uploadSpinner" class="hidden spinner">Processing file</span>
     </form>
 
     <h2>Search</h2>
     <input type="text" id="searchQuery" placeholder="Enter search query">
     <button onclick="performSearch()">Search</button>
+    <span id="searchSpinner" class="hidden spinner">Searching</span>
 
     <div id="searchResults"></div>
 
     <script>
         document.getElementById('uploadForm').onsubmit = async (e) => {
             e.preventDefault();
+            toggleSpinner('uploadSpinner', true);
             const formData = new FormData(e.target);
             const response = await fetch('/upload', {
                 method: 'POST',
                 body: formData,
             });
             alert(await response.text());
+            toggleSpinner('uploadSpinner', false);
         };
 
         async function performSearch() {
+            toggleSpinner('searchSpinner', true);
             const query = document.getElementById('searchQuery').value;
             const response = await fetch('/rag_search', {
                 method: 'POST',
@@ -38,6 +60,16 @@
             });
             const data = await response.json();
             document.getElementById('searchResults').innerText = JSON.stringify(data, null, 2);
+            toggleSpinner('searchSpinner', false);
+        }
+
+        function toggleSpinner(elementId, show) {
+            const element = document.getElementById(elementId);
+            if (show) {
+                element.classList.remove('hidden');
+            } else {
+                element.classList.add('hidden');
+            }
         }
     </script>
 </body>

@@ -49,6 +49,8 @@ go clean;go build -o app;chmod +x app;./app
 
 6. Open the browser and navigate to `http://localhost:8080/` to access the UI.
 
+![](UI.png)
+
 
 ## Using the REST API server
 
