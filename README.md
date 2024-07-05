@@ -23,15 +23,14 @@ See the LICENSE file.
 
 2. Serve llama3
 
-```bash
+``` bash
 ollama pull llama3
 ollama serve
-curl --location --request GET 'http://localhost:11434/'
+curl --request GET --location  'http://localhost:11434/'
 ```
 
 3. Start PostgreSQL with the vector extension
 
-```bash
 ``` bash
 docker run --name pgvector --rm -dit -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres ankane/pgvector
 env PGPASSWORD=postgres psql -h localhost -U postgres -c 'CREATE EXTENSION IF NOT EXISTS vector;';
