@@ -43,7 +43,7 @@ cd $GOPATH/src/rag_postgres_go
 export PG_HOST=localhost
 export PG_USER=postgres
 export PG_PASSWORD=postgres
-export PG_DB=postgres
+export PG_DB=postgres;
 go clean;go build -o app;chmod +x app;./app
 ```
 
