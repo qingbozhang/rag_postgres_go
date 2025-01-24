@@ -18,13 +18,15 @@ var storeMutex = &sync.Mutex{}
 var llmMutex = &sync.Mutex{}
 var llm *ollama.LLM
 
+const model = `deepseek-r1:7b`
+
 func init() {
 	var err error
 	Store, err = getVectorStore()
 	if err != nil {
 		log.Fatal(err)
 	}
-	llm, err = ollama.New(ollama.WithModel(`llama3`), ollama.WithServerURL("http://localhost:11434"))
+	llm, err = ollama.New(ollama.WithModel(model), ollama.WithServerURL("http://localhost:11434"))
 	if err != nil {
 		log.Println("error connecting to ollama %v", err)
 	}
@@ -71,6 +73,7 @@ func getVectorStore() (vectorstores.VectorStore, error) {
 			//pgvector.WithPreDeleteCollection(true),
 			pgvector.WithConnectionURL(pgConnURL),
 			pgvector.WithEmbedder(e),
+			//pgvector.WithCollectionName("news"),
 		)
 		if err != nil {
 			log.Fatalf("error creating vector store: %v", err)
@@ -92,7 +95,8 @@ func getOllama() (*ollama.LLM, error) {
 		return llm, nil
 	}
 	var err error
-	llm, err = ollama.New(ollama.WithModel(`llama3`), ollama.WithServerURL("http://localhost:11434"))
+
+	llm, err = ollama.New(ollama.WithModel(model), ollama.WithServerURL("http://localhost:11434"))
 	if err != nil {
 		return nil, err
 	}
