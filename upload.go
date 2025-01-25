@@ -62,7 +62,8 @@ func fileUploadHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	_, err = w.Write([]byte("File Uploaded.Data successfully processed."))
+	w.Header().Set("content-type", "application/json")
+	_, err = w.Write([]byte(`{"data":null,"code":0,"msg":"File Uploaded.Data successfully processed."}`))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
